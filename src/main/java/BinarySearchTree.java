@@ -38,7 +38,6 @@ public class BinarySearchTree {
     private int displayCountHelper(TreeNode root, String word) {
 
         if (root == null) {
-
             return 0;
         } else if (word.compareTo(root.word) < 0) {
             return displayCountHelper(root.left, word);

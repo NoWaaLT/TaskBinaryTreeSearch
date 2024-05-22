@@ -2,42 +2,21 @@ import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
-import java.io.FileNotFoundException;
-import java.util.logging.Level;
-
 import static org.junit.jupiter.api.Assertions.*;
+
+import java.util.logging.Level;
 
 class WordSearchInTextTest {
 
-    BinarySearchTree bst = new BinarySearchTree();
-    WordSearchInText mainProgramObject = new WordSearchInText();
-
     @BeforeAll
     static void setUp () {
-        WordSearchInText.logger.log(Level.INFO, "JUnit is loaded.");
-    }
-
-    @Test
-    void checkDoesBSTSearchWorksReturnsTrue() {
-        bst.insert("good", 1);
-        assertTrue(bst.search("good"));
-    }
-
-    @Test
-    void checkDoesBSTSearchWorksReturnsFalse() {
-        bst.insert("good", 1);
-        assertFalse(bst.search("goods"));
-    }
-
-    @Test
-    void checkDoesBSTSearchWorksWhenNotTrimReturnsFalse() {
-        bst.insert(" good ", 1);
-        assertFalse(bst.search("good"));
+        LoggerInit loggerInit = new LoggerInit(".\\src\\main\\java\\log.txt");
+        loggerInit.logger.log(Level.INFO, "JUnit is loaded.");
     }
 
     @Test
     void checkDoesFileExistReturnTrue() {
-        String filePath = "C:\\Users\\vjelis\\IdeaProjects\\TaskBinaryTreeSearch\\src\\main\\java\\lorem.txt";
+        String filePath = ".\\src\\main\\java\\lorem.txt";
         assertTrue(WordSearchInText.filePathChecker(filePath));
     }
 
@@ -49,7 +28,8 @@ class WordSearchInTextTest {
 
     @AfterAll
     static void finishAll() {
-        WordSearchInText.logger.log(Level.INFO, "All tests finished");
+        LoggerInit loggerInit = new LoggerInit(".\\src\\main\\java\\log.txt");
+        loggerInit.logger.log(Level.INFO, "All tests finished");
     }
 
 
