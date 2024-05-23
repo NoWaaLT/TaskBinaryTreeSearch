@@ -1,65 +1,74 @@
 import java.io.*;
 
 import java.util.logging.Level;
+import java.util.logging.Logger;
 
 public class WordSearchInText {
 
-    static boolean filePathChecker(String pathName) {
-        File fileName = new File(pathName);
-        return fileName.exists();
-    }
+  static boolean filePathChecker(String pathName) {
+    return new File(pathName).exists();
+  }
 
-    public static void main(String[] args) {
+  public static final Logger logger = Logger.getLogger("MyLog");
 
-        final String fileName = ".\\src\\main\\java\\lorem.txt";
-        final String logFilePath = ".\\src\\main\\java\\log.txt";
+  public static void main(String[] args) {
 
-        LoggerInit logO = new LoggerInit(logFilePath);
-        BinarySearchTree bsc = new BinarySearchTree();
+    final String fileName = ".\\src\\main\\java\\lorem.txt";
+    final String logFilePath = ".\\src\\main\\java\\log.txt";
 
-        String specificWord = "";
-        BufferedReader bufferedReader;
+    new LoggerInit(logFilePath);
 
-        try {
-            System.out.println("Input the word you want to search in a text");
+    BinarySearchTree bsc = new BinarySearchTree();
 
-            bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-            specificWord = bufferedReader.readLine();
-            bufferedReader.close();
+    String specificWord;
+    BufferedReader bufferedReader;
 
-            logO.logger.info("Search keyword: " + specificWord);
+    try {
 
-            if (filePathChecker(fileName)) {
-                FileReader fileReader = new FileReader(fileName);
-                bufferedReader = new BufferedReader(fileReader);
-                String line;
+      System.out.println("Input the word you want to search in a text");
+      bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+      specificWord = bufferedReader.readLine();
+      bufferedReader.close();
 
-                int position = 0;                                           // to store position of duplicates
+      logger.info("Search keyword: " + specificWord);
 
-                while ((line = bufferedReader.readLine()) != null) {        // reads a line of text till null
+      if (filePathChecker(fileName)) {
 
-                    String[] words = line.split("[.,:/\\n\\s\\t]+");
+        FileReader fileReader = new FileReader(fileName);
+        bufferedReader = new BufferedReader(fileReader);
 
-                    for (String word : words) {
-                        position++;
-                        bsc.insert(word, position);
-                    }
-                }
+        String line;
+        int position = 0; // to store position of duplicates
 
-                boolean searchStatus = bsc.search(specificWord);
+        while ((line = bufferedReader.readLine()) != null) { // reads a line of text till null
 
-                if (searchStatus) {
-                    logO.logger.info("Word was found " + bsc.displayCount(specificWord) + " times in " + bsc.displayPositions(specificWord) + " positions in text.");
-                } else {
-                    logO.logger.info("Word wasn't found.");
-                }
+          String[] words = line.split("[.,:/\\n\\s\\t]+"); // split by .,:/ and spaces, line breaks
 
-            } else {
-                logO.logger.log(Level.WARNING, "File is not found.");
-            }
-
-        } catch (IOException e) {
-            logO.logger.log(Level.WARNING, "Exception ::", e);
+          for (String word : words) {
+            position++;
+            bsc.insert(word, position);
+          }
         }
+
+        boolean searchStatus = bsc.search(specificWord);
+
+        if (searchStatus) {
+          logger.info(
+              "Word was found "
+                  + bsc.displayCount(specificWord)
+                  + " times in "
+                  + bsc.displayPositions(specificWord)
+                  + " positions in text.");
+        } else {
+          logger.info("Word wasn't found.");
+        }
+
+      } else {
+        logger.log(Level.WARNING, "File is not found.");
+      }
+
+    } catch (IOException e) {
+      logger.log(Level.WARNING, "Exception ::", e);
     }
+  }
 }
