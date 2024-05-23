@@ -7,21 +7,21 @@ import java.util.logging.SimpleFormatter;
 
 public class LoggerInit {
 
-    public final Logger logger = Logger.getLogger("MyLog");
+  public final Logger logger = Logger.getLogger("MyLog");
 
-    public LoggerInit(String logFilePath) {
+  public LoggerInit(String logFilePath) {
 
-        FileHandler fileHandler;
+    FileHandler fileHandler;
 
-        try {
-            fileHandler = new FileHandler(logFilePath);
-            logger.addHandler(fileHandler);
-            SimpleFormatter formatter = new SimpleFormatter();
-            fileHandler.setFormatter(formatter);
-            logger.info("Logger Initialized");
+    try {
+      fileHandler = new FileHandler(logFilePath);
+      logger.addHandler(fileHandler);
+      SimpleFormatter formatter = new SimpleFormatter();
+      fileHandler.setFormatter(formatter);
+      logger.info("Logger Initialized");
 
-        } catch (IOException e) {
-            logger.log(Level.WARNING, "Exception ::", e);
-        }
+    } catch (IOException e) {
+      logger.log(Level.WARNING, "Exception ::", e);
     }
+  }
 }
