@@ -83,6 +83,6 @@ class BinarySearchTreeTest {
 
   ArrayList<Integer> testArrayList = new ArrayList<>(Arrays.asList(2,3,5));
 
-  assertThat(testArrayList, IsNot.not(IsEqual.equalTo(bst.displayPositions("test1").toArray())));
+  assertThat(testArrayList, IsNot.not(IsEqual.equalTo(bst.displayPositions("test1").toArray()))); //
   }
 }

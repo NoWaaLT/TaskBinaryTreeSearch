@@ -67,7 +67,7 @@ public class ExecutableMenu {
 
   public static final Logger logger = Logger.getLogger("MyLog");
 
-  public static void main(String[] args) {
+  public static void main(String[] args) { //
 
     final String fileName = ".\\src\\main\\java\\lorem.txt";
     final String logFilePath = ".\\log\\log.txt";

@@ -8,7 +8,7 @@ import java.io.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
-public class FromWebToTxt {
+public class FromWebToTxt { //
 
   private String url;
 
