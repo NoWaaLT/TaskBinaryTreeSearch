@@ -6,6 +6,8 @@ import java.util.logging.Logger;
 
 public class ExecutableMenu {
 
+  public static final Logger logger = Logger.getLogger(ExecutableMenu.class.getName());
+
   static boolean filePathChecker(String filePath) {
     return new File(filePath).exists();
   }
@@ -64,8 +66,6 @@ public class ExecutableMenu {
     bst = fillTheBinarySearchTree.returnBinaryTreeFromFile();
     bst.displayTree();
   }
-
-  public static final Logger logger = Logger.getLogger("MyLog");
 
   public static void main(String[] args) { //
 

@@ -1,13 +1,12 @@
 import java.io.IOException;
 
 import java.util.logging.FileHandler;
-import java.util.logging.Level;
 import java.util.logging.Logger;
 import java.util.logging.SimpleFormatter;
 
 public class LoggerInit {
 
-  public final Logger logger = Logger.getLogger("MyLog");
+  public final Logger logger = Logger.getLogger(LoggerInit.class.getName());
 
   public LoggerInit(String logFilePath) {
 
@@ -20,8 +19,9 @@ public class LoggerInit {
       fileHandler.setFormatter(formatter);
       logger.info("Logger Initialized");
 
+
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Exception ::", e);
+      logger.warning("Warning: " + e);
     }
   }
 }
