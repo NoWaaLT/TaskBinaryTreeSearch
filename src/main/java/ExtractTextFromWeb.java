@@ -23,12 +23,13 @@ public class ExtractTextFromWeb {
     }
   }
 
-  public static void main(String[] args) throws IOException {
+  public static void main(String[] args) {
 
     BinarySearchTree bst = new BinarySearchTree();
 
     final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
-    final String url = "http://web.simmons.edu/~grovesd/comm244/notes/week3/html-test-page.html";
+    final String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
+
 
     try {
       Document document = Jsoup.connect(url).get();
