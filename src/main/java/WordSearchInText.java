@@ -5,8 +5,45 @@ import java.util.logging.Logger;
 
 public class WordSearchInText {
 
-  static boolean filePathChecker(String pathName) {
-    return new File(pathName).exists();
+  static boolean filePathChecker(String filePath) {
+    return new File(filePath).exists();
+  }
+
+  static String inputWord() {
+    try {
+      BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(System.in));
+      String specificWord = bufferedReader.readLine();
+      bufferedReader.close();
+
+      return specificWord;
+
+    } catch (IOException e) {
+      logger.log(Level.WARNING, "Exception ::", e);
+
+      return null;
+    }
+  }
+
+  static void insertTextFromFile(String filePath, BinarySearchTree bsc, String regex) {
+    try {
+      FileReader fileReader = new FileReader(filePath);
+      BufferedReader bufferedReader = new BufferedReader(fileReader);
+
+      String line;
+      int position = 0; // to store position of duplicates
+
+      while ((line = bufferedReader.readLine()) != null) { // reads a line of text till null
+
+        String[] words = line.split(regex); // split by .,:/ and spaces, line breaks
+
+        for (String word : words) {
+          position++;
+          bsc.insert(word, position);
+        }
+      }
+    } catch (IOException e) {
+      logger.log(Level.WARNING, "Exception ::", e);
+    }
   }
 
   public static final Logger logger = Logger.getLogger("MyLog");
@@ -15,60 +52,37 @@ public class WordSearchInText {
 
     final String fileName = ".\\src\\main\\java\\lorem.txt";
     final String logFilePath = ".\\src\\main\\java\\log.txt";
+    final String regex = "[.,:/\\n\\s\\t]+";
 
     new LoggerInit(logFilePath);
 
     BinarySearchTree bsc = new BinarySearchTree();
 
     String specificWord;
-    BufferedReader bufferedReader;
+    System.out.println("Input the word you want to search in a text");
+    specificWord = inputWord();
 
-    try {
+    logger.info("Search keyword: " + specificWord);
 
-      System.out.println("Input the word you want to search in a text");
-      bufferedReader = new BufferedReader(new InputStreamReader(System.in));
-      specificWord = bufferedReader.readLine();
-      bufferedReader.close();
+    if (filePathChecker(fileName)) {
 
-      logger.info("Search keyword: " + specificWord);
+      insertTextFromFile(fileName, bsc, regex);
 
-      if (filePathChecker(fileName)) {
+      boolean searchStatus = bsc.search(specificWord);
 
-        FileReader fileReader = new FileReader(fileName);
-        bufferedReader = new BufferedReader(fileReader);
-
-        String line;
-        int position = 0; // to store position of duplicates
-
-        while ((line = bufferedReader.readLine()) != null) { // reads a line of text till null
-
-          String[] words = line.split("[.,:/\\n\\s\\t]+"); // split by .,:/ and spaces, line breaks
-
-          for (String word : words) {
-            position++;
-            bsc.insert(word, position);
-          }
-        }
-
-        boolean searchStatus = bsc.search(specificWord);
-
-        if (searchStatus) {
-          logger.info(
-              "Word was found "
-                  + bsc.displayCount(specificWord)
-                  + " times in "
-                  + bsc.displayPositions(specificWord)
-                  + " positions in text.");
-        } else {
-          logger.info("Word wasn't found.");
-        }
-
+      if (searchStatus) {
+        logger.info(
+            "Word was found "
+                + bsc.displayCount(specificWord)
+                + " times in "
+                + bsc.displayPositions(specificWord)
+                + " positions in text.");
       } else {
-        logger.log(Level.WARNING, "File is not found.");
+        logger.info("Word wasn't found.");
       }
 
-    } catch (IOException e) {
-      logger.log(Level.WARNING, "Exception ::", e);
+    } else {
+      logger.log(Level.WARNING, "File is not found.");
     }
   }
 }
