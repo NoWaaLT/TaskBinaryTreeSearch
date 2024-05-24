@@ -28,7 +28,7 @@ public class ExtractTextFromWeb {
     BinarySearchTree bst = new BinarySearchTree();
 
     final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
-    final String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
+    final String url = "http://web.simmons.edu/~grovesd/comm244/notes/week3/html-test-page.html";
 
     try {
       Document document = Jsoup.connect(url).get();
