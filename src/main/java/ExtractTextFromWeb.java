@@ -30,6 +30,7 @@ public class ExtractTextFromWeb {
     final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
     final String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
 
+
     try {
       Document document = Jsoup.connect(url).get();
       Elements elements = document.select("h1, h2, h3, h4, h5, h6, p, a, li, span, small, button");
