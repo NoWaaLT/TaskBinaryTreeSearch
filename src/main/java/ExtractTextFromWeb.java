@@ -27,7 +27,7 @@ public class ExtractTextFromWeb {
 
     BinarySearchTree bst = new BinarySearchTree();
 
-    final String regex = "[\\.,:)(!-_;~=*+>{}<%/#\"\\s\\d]+";
+    final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
     final String url = "https://en.wikipedia.org/wiki/Java_(programming_language)";
 
     try {
