@@ -1,12 +1,16 @@
+package com.orioninc;
+
+import com.orioninc.binarysearchtree.BinarySearchTree;
+import com.orioninc.binarysearchtree.FillTheBinarySearchTree;
+import com.orioninc.fromweb.FromWebToTxt;
+
 import java.io.*;
 
 import java.util.Objects;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+
+import static com.orioninc.logger.LogUtil.*;
 
 public class ExecutableMenu {
-
-  public static final Logger logger = Logger.getLogger(ExecutableMenu.class.getName());
 
   static boolean filePathChecker(String filePath) {
     return new File(filePath).exists();
@@ -19,8 +23,7 @@ public class ExecutableMenu {
       word = bufferedReader.readLine();
 
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Exception ::", e);
-
+      logWarning("Exception ::" + e);
       word = null;
     }
     return word;
@@ -32,7 +35,7 @@ public class ExecutableMenu {
 
     FillTheBinarySearchTree fillTheBinarySearchTree = new FillTheBinarySearchTree(fileName, regex);
 
-    logger.info("Search keyword: " + specificWord);
+    LOGGER.info("Search keyword: " + specificWord);
 
     if (filePathChecker(fileName)) {
 
@@ -41,18 +44,18 @@ public class ExecutableMenu {
       boolean searchStatus = bsc.search(specificWord);
 
       if (searchStatus) {
-        logger.info(
+        logInfo(
             "Word was found "
                 + bsc.displayCount(specificWord)
                 + " times in "
                 + bsc.displayPositions(specificWord)
                 + " positions in text.");
       } else {
-        logger.info("Word wasn't found.");
+        logInfo("Word wasn't found.");
       }
 
     } else {
-      logger.log(Level.WARNING, "File is not found.");
+      logWarning("File is not found.");
     }
   }
 
@@ -69,13 +72,11 @@ public class ExecutableMenu {
 
   public static void main(String[] args) { //
 
-    final String fileName = ".\\src\\main\\java\\lorem.txt";
-    final String logFilePath = ".\\log\\log.txt";
+    final String fileName = ".\\TaskBinaryTreeSearch\\src\\main\\resources\\lorem.txt";
     final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
     final String url = "https://delfi.lt";
 
     int menu;
-    new LoggerInit(logFilePath);
 
     System.out.println("1 - Extract from File / 2 - Extract from Web");
 
@@ -89,7 +90,7 @@ public class ExecutableMenu {
         System.exit(0);
       }
     } catch (NumberFormatException e) {
-      logger.log(Level.WARNING, "Invalid input.");
+      logError("Invalid input.", e);
     }
   }
 }

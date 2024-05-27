@@ -1,3 +1,5 @@
+package com.orioninc.binarysearchtree;
+
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +12,7 @@ import static org.hamcrest.MatcherAssert.assertThat;
 
 import static org.junit.jupiter.api.Assertions.*;
 
-@DisplayName("Test BinarySearchTree class")
+@DisplayName("Test com.orioninc.binarysearchtree.BinarySearchTree class")
 class BinarySearchTreeTest {
   BinarySearchTree bst = new BinarySearchTree();
 

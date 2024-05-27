@@ -1,3 +1,5 @@
+package com.orioninc.binarysearchtree;
+
 import java.util.ArrayList;
 
 public class BinarySearchTree {

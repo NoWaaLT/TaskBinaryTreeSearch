@@ -1,18 +1,17 @@
+package com.orioninc.binarysearchtree;
+
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
 
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import static com.orioninc.logger.LogUtil.*;
 
 public class FillTheBinarySearchTree { //
 
   private String fileName;
   private String regex;
 
-  public static final Logger logger = Logger.getLogger("MyLog");
-
-  FillTheBinarySearchTree(String fileName, String regex) {
+  public FillTheBinarySearchTree(String fileName, String regex) {
     this.fileName = fileName;
     this.regex = regex;
   }
@@ -45,7 +44,7 @@ public class FillTheBinarySearchTree { //
         }
       }
     } catch (IOException e) {
-      logger.log(Level.WARNING, "Exception ::", e);
+      logError("Exception ::", e);
     }
 
     return bst;
