@@ -15,6 +15,7 @@ import org.jsoup.select.Elements;
 
 public class FromWebToTxt {
   private String url;
+
   public FromWebToTxt(String url) {
     this.url = url;
   }
@@ -36,19 +37,19 @@ public class FromWebToTxt {
     return elements;
   }
 
-  public String getExtractedFileName (Elements elements) {
-      String fileName = "";
+  public String getExtractedFileName(Elements elements) {
+    String fileName = "";
 
-      try (BufferedWriter writer = new BufferedWriter(new FileWriter("extracted.txt"))) {
-            for (Element element: elements) {
-                writer.write(element.text());
-                writer.newLine();
-                fileName = "extracted.txt";
-            }
-      } catch (IOException e) {
-          LOGGER.log(Level.WARNING, "Something went wrong.");
-          fileName = null;
+    try (BufferedWriter writer = new BufferedWriter(new FileWriter("extracted.txt"))) {
+      for (Element element : elements) {
+        writer.write(element.text());
+        writer.newLine();
+        fileName = "extracted.txt";
       }
-      return fileName;
+    } catch (IOException e) {
+      LOGGER.log(Level.WARNING, "Something went wrong.");
+      fileName = null;
+    }
+    return fileName;
   }
 }

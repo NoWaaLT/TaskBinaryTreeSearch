@@ -1,4 +1,4 @@
-package com.orioninc.binarysearchtree;
+package com.orioninc.binarysearch;
 
 import java.util.ArrayList;
 

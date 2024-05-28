@@ -1,4 +1,4 @@
-package com.orioninc.binarysearchtree;
+package com.orioninc.binarysearch;
 
 import org.hamcrest.core.IsEqual;
 import org.hamcrest.core.IsNot;

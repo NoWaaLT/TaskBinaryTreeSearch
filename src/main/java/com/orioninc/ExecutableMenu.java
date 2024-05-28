@@ -1,11 +1,14 @@
 package com.orioninc;
 
-import com.orioninc.binarysearchtree.BinarySearchTree;
-import com.orioninc.binarysearchtree.FillTheBinarySearchTree;
+import com.orioninc.binarysearch.BinarySearchTree;
+import com.orioninc.binarysearch.FillTheBinarySearchTree;
+import com.orioninc.db.DbRecord;
 import com.orioninc.fromweb.FromWebToTxt;
 
 import java.io.*;
 
+import java.sql.*;
+import java.time.LocalDateTime;
 import java.util.Objects;
 
 import static com.orioninc.logger.LogUtil.*;
@@ -29,7 +32,7 @@ public class ExecutableMenu {
     return word;
   }
 
-  static void extractFromFileMenu(String fileName, String regex) {
+  static void extractFromFileMenu(String fileName, String regex, Connection connection) {
     System.out.println("Input the word you want to search in a text");
     String specificWord = inputWord();
 
@@ -50,6 +53,25 @@ public class ExecutableMenu {
                 + " times in "
                 + bsc.displayPositions(specificWord)
                 + " positions in text.");
+
+        DbRecord dbRecord =
+            new DbRecord(
+                LocalDateTime.now(), specificWord, bsc.displayPositions(specificWord).get(0), 0);
+
+        try {
+          PreparedStatement ps =
+              connection.prepareStatement(
+                  "INSERT INTO Records () VALUES (?, ?, ?, ?)");
+
+          ps.setObject(1, dbRecord.getDateTime());
+          ps.setString(2, dbRecord.getWord());
+          ps.setInt(3, dbRecord.getPosition());
+          ps.setInt(4, 0);
+
+        } catch (SQLException e) {
+          logWarning("SQL Exception");
+        }
+
       } else {
         logInfo("Word wasn't found.");
       }
@@ -72,25 +94,41 @@ public class ExecutableMenu {
 
   public static void main(String[] args) { //
 
-    final String fileName = ".\\TaskBinaryTreeSearch\\src\\main\\resources\\lorem.txt";
+    final String fileName = ".\\src\\main\\resources\\lorem.txt";
     final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
     final String url = "https://delfi.lt";
 
+    final String usernameDb = "sa";
+    final String passDb = "";
+
     int menu;
 
-    System.out.println("1 - Extract from File / 2 - Extract from Web");
-
-    try {
-      menu = Integer.parseInt(Objects.requireNonNull(inputWord()));
-      if (menu == 1) {
-        extractFromFileMenu(fileName, regex);
-      } else if (menu == 2) {
-        extractFromWebMenu(url, regex);
-      } else {
-        System.exit(0);
+    try (Connection connection =
+        DriverManager.getConnection(
+            "jdbc:h2:~/IdeaProjects/TaskBinaryTreeSearch/src/main/java/com/orioninc/db",
+            usernameDb,
+            passDb)) {
+      if (connection.isValid(0)) {
+        logInfo("Connected to Database");
       }
-    } catch (NumberFormatException e) {
-      logError("Invalid input.", e);
+
+      try {
+        menu = Integer.parseInt(Objects.requireNonNull(inputWord()));
+        if (menu == 1) {
+          extractFromFileMenu(fileName, regex, connection);
+        } else if (menu == 2) {
+          extractFromWebMenu(url, regex);
+        } else {
+          System.exit(0);
+        }
+      } catch (NumberFormatException e) {
+        logError("Invalid input.", e);
+      }
+
+    } catch (SQLException e) {
+      logError("Database Connection Failed", e);
     }
+
+    System.out.println("1 - Extract from File / 2 - Extract from Web");
   }
 }

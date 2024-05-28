@@ -12,7 +12,8 @@ public class LogUtil {
 
   static {
     try {
-      FileHandler fileHandler = new FileHandler(".\\TaskBinaryTreeSearch\\log\\log.txt");
+      FileHandler fileHandler =
+          new FileHandler(".\\log\\log.txt");
       LOGGER.addHandler(fileHandler);
       SimpleFormatter formatter = new SimpleFormatter();
       fileHandler.setFormatter(formatter);
