@@ -59,7 +59,7 @@ public class ExecutableMenu {
             new DbRecord(
                 LocalDateTime.now(), specificWord, bsc.displayPositions(specificWord).get(0), 0);
         try {
-          getPreparedStatement(connection, tableName, dbRecord).executeUpdate();
+          getPreparedStatement(connection, dbRecord).executeUpdate();
         } catch (SQLException e) {
           logWarning("SQL Exception" + e.getMessage());
         }
@@ -69,7 +69,7 @@ public class ExecutableMenu {
 
         DbRecord dbRecord = new DbRecord(LocalDateTime.now(), specificWord, 0, 0);
         try {
-          getPreparedStatement(connection, tableName, dbRecord).executeUpdate();
+          getPreparedStatement(connection, dbRecord).executeUpdate();
         } catch (SQLException e) {
           logWarning("SQL Exception" + e.getMessage());
         }
@@ -81,12 +81,10 @@ public class ExecutableMenu {
   }
 
   static PreparedStatement getPreparedStatement(
-      Connection connection, String tableName, DbRecord dbRecord) {
+      Connection connection, DbRecord dbRecord) {
     PreparedStatement ps = null;
     String sqlQuery =
-        "INSERT INTO "
-            + tableName
-            + " (record_timestamp, word, position, source) VALUES (?, ?, ?, ?)";
+        "INSERT INTO RECORDS (record_timestamp, word, position, source) VALUES (?, ?, ?, ?)";
     try {
       ps = connection.prepareStatement(sqlQuery);
       ps.setObject(1, dbRecord.getDateTime());
