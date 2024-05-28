@@ -3,7 +3,7 @@ package com.orioninc;
 import com.orioninc.binarysearch.BinarySearchTree;
 import com.orioninc.binarysearch.FillTheBinarySearchTree;
 import com.orioninc.db.DbRecord;
-import com.orioninc.fromweb.FromWebToTxt;
+import com.orioninc.fromweb.FromWeb;
 
 import java.io.*;
 
@@ -32,13 +32,14 @@ public class ExecutableMenu {
     return word;
   }
 
-  static void extractFromFileMenu(String fileName, String regex, Connection connection) {
+  static void extractFromFileMenu(
+      String fileName, String regex, Connection connection, String tableName) {
     System.out.println("Input the word you want to search in a text");
     String specificWord = inputWord();
 
     FillTheBinarySearchTree fillTheBinarySearchTree = new FillTheBinarySearchTree(fileName, regex);
 
-    LOGGER.info("Search keyword: " + specificWord);
+    logInfo("Searching for : " + specificWord);
 
     if (filePathChecker(fileName)) {
 
@@ -57,23 +58,21 @@ public class ExecutableMenu {
         DbRecord dbRecord =
             new DbRecord(
                 LocalDateTime.now(), specificWord, bsc.displayPositions(specificWord).get(0), 0);
-
         try {
-          PreparedStatement ps =
-              connection.prepareStatement(
-                  "INSERT INTO Records () VALUES (?, ?, ?, ?)");
-
-          ps.setObject(1, dbRecord.getDateTime());
-          ps.setString(2, dbRecord.getWord());
-          ps.setInt(3, dbRecord.getPosition());
-          ps.setInt(4, 0);
-
+          getPreparedStatement(connection, tableName, dbRecord).executeUpdate();
         } catch (SQLException e) {
-          logWarning("SQL Exception");
+          logWarning("SQL Exception" + e.getMessage());
         }
 
       } else {
         logInfo("Word wasn't found.");
+
+        DbRecord dbRecord = new DbRecord(LocalDateTime.now(), specificWord, 0, 0);
+        try {
+          getPreparedStatement(connection, tableName, dbRecord).executeUpdate();
+        } catch (SQLException e) {
+          logWarning("SQL Exception" + e.getMessage());
+        }
       }
 
     } else {
@@ -81,12 +80,33 @@ public class ExecutableMenu {
     }
   }
 
+  static PreparedStatement getPreparedStatement(
+      Connection connection, String tableName, DbRecord dbRecord) {
+    PreparedStatement ps = null;
+    String sqlQuery =
+        "INSERT INTO "
+            + tableName
+            + " (record_timestamp, word, position, source) VALUES (?, ?, ?, ?)";
+    try {
+      ps = connection.prepareStatement(sqlQuery);
+      ps.setObject(1, dbRecord.getDateTime());
+      ps.setString(2, dbRecord.getWord());
+      ps.setInt(3, dbRecord.getPosition());
+      ps.setInt(4, 0);
+
+    } catch (SQLException e) {
+      logWarning("SQL Exception" + e.getMessage());
+    }
+    return ps;
+  }
+
   static void extractFromWebMenu(String url, String pattern) {
-    FromWebToTxt fromWebToTxt = new FromWebToTxt(url);
-    String extractedFileName = fromWebToTxt.getExtractedFileName(fromWebToTxt.getElementsFromWeb());
+    FromWeb fromWeb = new FromWeb(url);
+    String extractedFileName = fromWeb.getExtractedFileName(fromWeb.getElementsFromWeb());
 
     FillTheBinarySearchTree fillTheBinarySearchTree =
         new FillTheBinarySearchTree(extractedFileName, pattern);
+
     BinarySearchTree bst;
     bst = fillTheBinarySearchTree.returnBinaryTreeFromFile();
     bst.displayTree();
@@ -95,27 +115,40 @@ public class ExecutableMenu {
   public static void main(String[] args) { //
 
     final String fileName = ".\\src\\main\\resources\\lorem.txt";
-    final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+>\\{\\}<%\\/#\"\\s\\d&&[^s]]+";
+    final String regex = "[\\]\\.,:\\)\\(!\\-_\\?;~=\\*+„“–>\\{\\}<%©\\/#\"\\s\\d&&[^s]]+";
     final String url = "https://delfi.lt";
+    final String tableName = "Records";
 
     final String usernameDb = "sa";
     final String passDb = "";
 
     int menu;
 
+    /*
+     * CREATE TABLE Records (
+     * id INT PRIMARY KEY AUTO_INCREMENT,
+     * record_timestamp TIMESTAMP NOT NULL,
+     * word VARCHAR(255),
+     * position INT NOT NULL,
+     * source INT NOT NULL
+     * );
+     */
+
     try (Connection connection =
         DriverManager.getConnection(
-            "jdbc:h2:~/IdeaProjects/TaskBinaryTreeSearch/src/main/java/com/orioninc/db",
+            "jdbc:h2:file:~/IdeaProjects/TaskBinaryTreeSearch/src/main/java/com/orioninc/db/database",
             usernameDb,
             passDb)) {
       if (connection.isValid(0)) {
         logInfo("Connected to Database");
       }
 
+      System.out.println("1 - Extract from File / 2 - Extract from Web");
+
       try {
         menu = Integer.parseInt(Objects.requireNonNull(inputWord()));
         if (menu == 1) {
-          extractFromFileMenu(fileName, regex, connection);
+          extractFromFileMenu(fileName, regex, connection, tableName);
         } else if (menu == 2) {
           extractFromWebMenu(url, regex);
         } else {
@@ -128,7 +161,5 @@ public class ExecutableMenu {
     } catch (SQLException e) {
       logError("Database Connection Failed", e);
     }
-
-    System.out.println("1 - Extract from File / 2 - Extract from Web");
   }
 }

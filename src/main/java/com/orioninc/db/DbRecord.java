@@ -17,8 +17,6 @@ public class DbRecord {
   }
 
   public LocalDateTime getDateTime() {
-
-
     return dateTime;
   }
 
