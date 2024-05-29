@@ -1,25 +1,41 @@
 package com.orioninc.fromweb;
 
-import java.io.BufferedWriter;
-import java.io.FileWriter;
-import java.io.IOException;
-
-import static com.orioninc.logger.LogUtil.logWarning;
-
+import com.orioninc.abstractfactory.Search;
+import com.orioninc.binarysearch.BinarySearchTree;
+import com.orioninc.binarysearch.FillTheBinarySearchTree;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
 
-public class FromWeb {
+import java.io.*;
+
+import static com.orioninc.logger.LogUtil.logWarning;
+
+public class SearchFromWeb implements Search {
   private String url;
 
-  public FromWeb(String url) {
+  public SearchFromWeb(String url) {
     this.url = url;
   }
 
   public void setUrl(String url) {
     this.url = url;
+  }
+
+  @Override
+  public void search() {
+
+    String extractedFileName = getExtractedFileName(getElementsFromWeb());
+
+    FillTheBinarySearchTree fillTheBinarySearchTree =
+            new FillTheBinarySearchTree(extractedFileName, REGEX);
+
+    BinarySearchTree bst = fillTheBinarySearchTree.returnBinaryTreeFromFile();
+    String specificWord = inputWord();
+    boolean searchStatus = bst.search(specificWord);
+    int source = 1; // Means from WebPage
+    printResultAndPushToDatabase(searchStatus, bst, specificWord, source);
   }
 
   public Elements getElementsFromWeb() {
@@ -50,4 +66,5 @@ public class FromWeb {
     }
     return fileName;
   }
+
 }

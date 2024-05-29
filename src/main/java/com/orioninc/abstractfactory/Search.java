@@ -1,6 +1,7 @@
-package abstractFactory;
+package com.orioninc.abstractfactory;
 
 import com.orioninc.binarysearch.BinarySearchTree;
+import com.orioninc.db.DatabaseConnection;
 import com.orioninc.db.DbRecord;
 
 import java.io.BufferedReader;
@@ -37,7 +38,7 @@ public interface Search {
     return new File(filePath).exists();
   }
 
-  default PreparedStatement getPreparedStatement(Connection connection, DbRecord dbRecord) {
+  default PreparedStatement getPreparedStatementToInsertRecord(Connection connection, DbRecord dbRecord) {
     PreparedStatement ps = null;
     String sqlQuery =
         "INSERT INTO RECORDS (record_timestamp, word, position, source) VALUES (?, ?, ?, ?)";
@@ -54,7 +55,8 @@ public interface Search {
     return ps;
   }
 
-  default void printResultAndPushToDatabase(boolean searchStatus, BinarySearchTree bst, String specificWord, int source) {
+  default void printResultAndPushToDatabase(
+      boolean searchStatus, BinarySearchTree bst, String specificWord, int source) {
     try {
       Connection databaseConnection = new DatabaseConnection().getDatabaseConnection();
 
@@ -68,9 +70,12 @@ public interface Search {
 
         DbRecord dbRecord =
             new DbRecord(
-                LocalDateTime.now(), specificWord, bst.displayPositions(specificWord).get(0), source);
+                LocalDateTime.now(),
+                specificWord,
+                bst.displayPositions(specificWord).get(0),
+                source);
         try {
-          getPreparedStatement(databaseConnection, dbRecord).executeUpdate();
+          getPreparedStatementToInsertRecord(databaseConnection, dbRecord).executeUpdate();
         } catch (SQLException e) {
           logWarning("SQL Exception" + e.getMessage());
         }
@@ -80,7 +85,7 @@ public interface Search {
 
         DbRecord dbRecord = new DbRecord(LocalDateTime.now(), specificWord, 0, source);
         try {
-          getPreparedStatement(databaseConnection, dbRecord).executeUpdate();
+          getPreparedStatementToInsertRecord(databaseConnection, dbRecord).executeUpdate();
         } catch (SQLException e) {
           logWarning("SQL Exception" + e.getMessage());
         }

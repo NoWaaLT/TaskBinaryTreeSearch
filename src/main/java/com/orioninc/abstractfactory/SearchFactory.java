@@ -1,4 +1,7 @@
-package abstractFactory;
+package com.orioninc.abstractfactory;
+
+import com.orioninc.fromtxt.SearchFromText;
+import com.orioninc.fromweb.SearchFromWeb;
 
 public class SearchFactory extends AbstractFactory {
   final String FROM_TEXT = "FromText";
@@ -7,7 +10,7 @@ public class SearchFactory extends AbstractFactory {
   private String getIdentity(String executableObject) {
     LinkIdentify linkIdentify = new LinkIdentify();
 
-    if(linkIdentify.isLink(executableObject)) {
+    if (linkIdentify.isLink(executableObject)) {
       return FROM_WEB;
     } else {
       return FROM_TEXT;

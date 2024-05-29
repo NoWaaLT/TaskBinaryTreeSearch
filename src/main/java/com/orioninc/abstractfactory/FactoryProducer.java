@@ -1,4 +1,4 @@
-package abstractFactory;
+package com.orioninc.abstractfactory;
 
 public class FactoryProducer {
     public static AbstractFactory getFactory() {
