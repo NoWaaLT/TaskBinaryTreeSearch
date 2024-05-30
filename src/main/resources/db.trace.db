@@ -1,0 +1,9 @@
+2024-05-30 15:15:15 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "RECORDS" not found (this database is empty); SQL statement:
+INSERT INTO RECORDS (record_timestamp, word, position, source) VALUES (?, ?, ?, ?) [42104-214]
+2024-05-30 15:53:40 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Syntax error in SQL statement "[*]liquibase init start-h2"; SQL statement:
+liquibase init start-h2 [42000-214]
+2024-05-30 17:11:53 jdbc[3]: exception
+org.h2.jdbc.JdbcSQLSyntaxErrorException: Table "DATABASECHANGELOGLOCK" not found; SQL statement:
+SELECT COUNT(*) FROM DATABASECHANGELOGLOCK [42102-214]

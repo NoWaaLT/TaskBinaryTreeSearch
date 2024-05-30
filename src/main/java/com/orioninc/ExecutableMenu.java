@@ -1,5 +1,8 @@
-package com.orioninc.abstractfactory;
+package com.orioninc;
 
+import com.orioninc.abstractfactory.AbstractFactory;
+import com.orioninc.abstractfactory.FactoryProducer;
+import com.orioninc.abstractfactory.Search;
 import com.orioninc.db.DatabaseMigration;
 
 import java.util.Scanner;
@@ -10,7 +13,7 @@ public class ExecutableMenu {
     AbstractFactory searchFactory = FactoryProducer.getFactory();
 
     Scanner sc = new Scanner(System.in);
-    System.out.println("1 - Extract from File / 2 - Extract from Web");
+    System.out.println("1 - Extract from File / 2 - Extract from Web / 3 - Export a database");
     int menu = sc.nextInt();
 
     if (menu == 1) {

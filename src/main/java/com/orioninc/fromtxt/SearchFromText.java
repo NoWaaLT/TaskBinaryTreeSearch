@@ -17,10 +17,6 @@ public class SearchFromText implements Search {
     this.fileName = fileName;
   }
 
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
-
   @Override
   public void search() {
     if (filePathChecker(fileName)) {

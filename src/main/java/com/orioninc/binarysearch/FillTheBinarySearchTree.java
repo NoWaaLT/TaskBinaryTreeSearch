@@ -8,19 +8,11 @@ import static com.orioninc.logger.LogUtil.*;
 
 public class FillTheBinarySearchTree { //
 
-  private String fileName;
-  private String regex;
+  private final String fileName;
+  private final String regex;
 
   public FillTheBinarySearchTree(String fileName, String regex) {
     this.fileName = fileName;
-    this.regex = regex;
-  }
-
-  public void setFileName(String fileName) {
-    this.fileName = fileName;
-  }
-
-  public void setRegex(String regex) {
     this.regex = regex;
   }
 

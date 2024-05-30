@@ -1,0 +1,12 @@
+May 30, 2024 6:04:59 PM com.orioninc.logger.LogUtil logInfo
+INFO: com.orioninc.logger.LogUtil - Logger Initialized
+May 30, 2024 6:04:59 PM com.orioninc.logger.LogUtil logError
+SEVERE: com.orioninc.abstractfactory.Search - Database Connection Failed
+java.sql.SQLException: No suitable driver found for jdbc:h2:file:~/IdeaProjects/TaskBinaryTreeSearch/src/main/resources
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:706)
+	at java.sql/java.sql.DriverManager.getConnection(DriverManager.java:229)
+	at com.orioninc.db.DatabaseConnection.getDatabaseConnection(DatabaseConnection.java:13)
+	at com.orioninc.abstractfactory.Search.printResultAndPushToDatabase(Search.java:61)
+	at com.orioninc.fromtxt.SearchFromText.search(SearchFromText.java:29)
+	at com.orioninc.ExecutableMenu.main(ExecutableMenu.java:21)
+
