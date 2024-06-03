@@ -26,6 +26,7 @@ public class ExecutableMenu {
   enum Choice {
     EXTRACT,
     EXPORT,
+    CHANGELOG,
     UPDATE
   }
 
@@ -33,7 +34,11 @@ public class ExecutableMenu {
 
     AbstractFactory searchFactory = FactoryProducer.getFactory();
     System.out.println(
-        "EXTRACT - Extract from File/Web page \nEXPORT - Export a database\nUPDATE - Liquibase update");
+            """
+                    EXTRACT - Extract from File/Web page\s
+                    EXPORT - Export a database
+                    CHANGELOG - Export Changelog history file
+                    UPDATE - Liquibase update""");
 
     try {
 
@@ -51,6 +56,13 @@ public class ExecutableMenu {
           DatabaseMigration databaseMigration = new DatabaseMigration();
           databaseMigration.backupDatabaseIntoSqlScript(
               "C:\\Users\\vjelis\\IdeaProjects\\TaskBinaryTreeSearch\\db_script.sql");
+          logInfo("Export completed");
+        }
+        case CHANGELOG -> {
+          DatabaseMigration databaseMigration = new DatabaseMigration();
+          databaseMigration.exportChangeLog(
+              "C:\\Users\\vjelis\\IdeaProjects\\TaskBinaryTreeSearch\\src\\main\\resources\\changelog\\history\\dbchangeloghistory.sql");
+          logInfo("Export completed");
         }
         case UPDATE -> {
           java.sql.Connection connection = new DatabaseConnection().getDatabaseConnection();
@@ -60,7 +72,7 @@ public class ExecutableMenu {
                   .findCorrectDatabaseImplementation(new JdbcConnection(connection));
           Liquibase liquibase =
               new Liquibase(
-                  "changelog\\changelog.sql", new ClassLoaderResourceAccessor(), database);
+                  "changelog\\changelog.xml", new ClassLoaderResourceAccessor(), database);
 
           liquibase.update(new Contexts(), new LabelExpression());
         }
@@ -71,7 +83,7 @@ public class ExecutableMenu {
     } catch (DatabaseException | IllegalArgumentException e) {
       logError("Exception:", e);
     } catch (SQLException | LiquibaseException e) {
-      logError(e.getMessage(), e);
+      logError("Exception:", e);
       throw new RuntimeException(e);
     }
   }

@@ -5,7 +5,7 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 
 public class DatabaseConnection {
-    private static final String DB_URL = "jdbc:h2:file:~/IdeaProjects/TaskBinaryTreeSearch/src/main/resources/db/db";
+    private static final String DB_URL = "jdbc:h2:file:~/IdeaProjects/TaskBinaryTreeSearch/src/main/resources/db/db2";
     private static final String USER_DB = "sa";
     private static final String USER_PASS = "";
 

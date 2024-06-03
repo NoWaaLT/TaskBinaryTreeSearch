@@ -4,10 +4,10 @@ import java.time.LocalDateTime;
 
 public class DbRecord {
 
-  private LocalDateTime dateTime;
-  private String word;
-  private int position;
-  private int source; // position 0 - from text,position 1 - from web
+  private final LocalDateTime dateTime;
+  private final String word;
+  private final int position;
+  private final int source; // position 0 - from text,position 1 - from web
 
   public DbRecord (LocalDateTime dateTime, String word, int position, int source) {
     this.dateTime = dateTime;

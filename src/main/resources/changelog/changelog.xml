@@ -9,7 +9,8 @@
         http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd
         http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-latest.xsd">
 
-    <include file="changeset1/changeset1.sql"/>
-    <include file="changeset2/changeset2.sql"/>
-    <include file="changeset3/changeset3.sql"/>
+    <include file="changesets/changeset1.0/changeset1.sql"/>
+    <include file="changesets/changeset2.0/changeset2.sql"/>
+    <include file="changesets/changeset3.0/changeset3.sql"/>
+
 </databaseChangeLog>

@@ -21,4 +21,16 @@ public class DatabaseMigration extends DatabaseConnection {
       logWarning("Exception: " + e);
     }
   }
+
+  public void exportChangeLog(String sqlFilePath) {
+    try {
+      Connection connection = getDatabaseConnection();
+      PreparedStatement preparedStatement =
+          connection.prepareStatement(
+                  String.format("SCRIPT TO '%s' TABLE DATABASECHANGELOG", sqlFilePath));
+      preparedStatement.execute();
+    } catch (SQLException e) {
+      logWarning("Exception: " + e);
+    }
+  }
 }
